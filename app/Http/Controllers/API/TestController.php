@@ -7,6 +7,14 @@ use Illuminate\Http\Request;
 
 class TestController extends Controller
 {
+
+    /**
+     * @OA\Get(
+     *     path="/api/test",
+     *     tags={"TEST"},
+     *     @OA\Response(response="200", description="Display a listing of projects.")
+     * )
+     */
     /**
      * Display a listing of the resource.
      *
