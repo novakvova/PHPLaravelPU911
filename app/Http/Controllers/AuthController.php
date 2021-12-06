@@ -86,7 +86,7 @@ class AuthController extends Controller
 
 
         if (! $token = auth()->attempt($validator->validated())) {
-            return response()->json(['error' => 'Unauthorized'], Response::HTTP_UNAUTHORIZED);
+            return response()->json(['error' => 'Дані вказано не вірно!'], Response::HTTP_UNAUTHORIZED);
         }
 
         return $this->createNewToken($token);
@@ -252,9 +252,9 @@ class AuthController extends Controller
     protected function createNewToken($token){
         return response()->json([
             'access_token' => $token,
-            'token_type' => 'bearer',
+//            'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60,
-            'user' => auth()->user()
+//            'user' => auth()->user()
         ], Response::HTTP_OK);
     }
 
