@@ -14,6 +14,21 @@ class ProductController extends Controller
      * @OA\Get(
      *     tags={"Product"},
      *     path="/api/products",
+     *     @OA\Parameter(
+     *      name="page",
+     *      in="query",
+     *      @OA\Schema(
+     *           type="string"
+     *      )
+     *   ),
+     *     @OA\Parameter(
+     *      name="name",
+     *      in="query",
+     *      required=false,
+     *      @OA\Schema(
+     *           type="string"
+     *      )
+     *   ),
      *     @OA\Response(response="200", description="List Products.")
      * )
      */
@@ -22,14 +37,18 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::all();
-        return response()->json([
-            "success" => true,
-            "message" => "Product List",
-            "data" => $products
-        ]);
+        //$products = Product::all();
+        $input = $request->all();
+        $name=isset($input["name"])? $input["name"] : "";
+        if(!empty($name))
+        {
+            $products = Product::where("name", 'LIKE', "%$name%")->paginate(2);
+            return response()->json($products);
+        }
+        $products = Product::paginate(2);
+        return response()->json($products);
     }
 
     /**
