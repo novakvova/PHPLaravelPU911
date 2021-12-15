@@ -128,6 +128,7 @@ class ProductController extends Controller
         $imageName = uniqid().'.'.$request->file->extension();
         $path = public_path('images');
         $request->file->move($path, $imageName);
+        $input['image']=$imageName;
         $product = Product::create($input);
         return response()->json([
             "success" => true,
