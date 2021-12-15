@@ -72,6 +72,21 @@ class ProductController extends Controller
      *          type="string"
      *      )
      *   ),
+     *  @OA\RequestBody(
+     *         required=true,
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property(
+     *                     description="image to upload",
+     *                     property="file",
+     *                     type="file",
+     *                ),
+     *                 required={"file"}
+     *             )
+     *         )
+     *     ),
+     *
      *   @OA\Response(
      *      response=200,
      *       description="Success",
@@ -109,6 +124,10 @@ class ProductController extends Controller
         if ($validator->fails()) {
             return $this->sendError('Validation Error.', $validator->errors());
         }
+
+        $imageName = uniqid().'.'.$request->file->extension();
+        $path = public_path('images');
+        $request->file->move($path, $imageName);
         $product = Product::create($input);
         return response()->json([
             "success" => true,
